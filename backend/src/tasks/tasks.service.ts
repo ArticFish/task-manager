@@ -1,26 +1,39 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { Repository } from 'typeorm';
+import { Task } from './entities/task.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class TasksService {
-  create(createTaskDto: CreateTaskDto) {
-    return 'This action adds a new task';
+  constructor(@InjectRepository(Task)private tasksRepository: Repository<Task>) {}
+  
+  createTask(createTaskDto: CreateTaskDto,userId:number) {
+    const task = this.tasksRepository.create({
+      ...createTaskDto,
+      user: { id: userId }
+    });
+    return this.tasksRepository.save(task);
   }
 
-  findAll() {
-    return `This action returns all tasks`;
+  async findAll(userId: number) {
+    return this.tasksRepository.find({ where: { user: { id: userId } } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
+  async findOne(taskId: number,userId: number) {
+    return this.tasksRepository.findOne({ where: { id: taskId, user: { id: userId } } });
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  async update(taskId: number, userId: number,updateTaskDto: UpdateTaskDto) {
+    const task = await this.tasksRepository.findOne({ where: { id: taskId, user: { id: userId } } });
+    if (!task) throw new NotFoundException('Task not found');
+    return this.tasksRepository.update(taskId,updateTaskDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  async remove(taskId: number, userId: number) {
+    const task = await this.tasksRepository.findOne({ where: { id: taskId, user: { id: userId } } });
+    if (!task) throw new NotFoundException('Task not found');
+    return this.tasksRepository.delete(taskId);
   }
 }
