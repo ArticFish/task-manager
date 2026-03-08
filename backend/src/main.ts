@@ -8,7 +8,7 @@ async function bootstrap() {
     whitelist: true,
   }));
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: process.env.FRONTEND_URL,
   });
   await app.listen(process.env.PORT ?? 4000);
 }
