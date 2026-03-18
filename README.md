@@ -114,7 +114,6 @@ npm run dev
 The frontend will run on `http://localhost:3001`
 
 ---
----
 
 ## 🐳 Running with Docker
 
@@ -154,6 +153,8 @@ docker-compose up --build
 
 - Frontend: http://localhost:3001
 - Backend: http://localhost:3000
+
+---
 
 ## 🌐 Deploying
 
