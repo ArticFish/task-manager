@@ -114,6 +114,46 @@ npm run dev
 The frontend will run on `http://localhost:3001`
 
 ---
+---
+
+## 🐳 Running with Docker
+
+### Prerequisites
+
+- Docker Desktop installed and running
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/ArticFish/task-manager.git
+cd task-manager
+```
+
+### 2. Create the environment file
+
+Create a `.env` file in the root folder:
+```env
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=taskmanager
+DB_HOST=db
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+DB_NAME=taskmanager
+JWT_SECRET=your_secret_key
+JWT_EXPIRES_IN=1d
+FRONTEND_URL=http://localhost:3001
+NEXT_PUBLIC_API_URL=http://localhost:3000
+PORT=3000
+```
+
+### 3. Run
+```bash
+docker-compose up --build
+```
+
+- Frontend: http://localhost:3001
+- Backend: http://localhost:3000
 
 ## 🌐 Deploying
 
